@@ -1,8 +1,6 @@
 # 👋 ¡Hola! Soy ANONIMO432HZ
 
-> **Estudiante de programación y autodidacta en constante aprendizaje del vasto mundo de la tecnología.**
-
-Me considero un **autodidacta** en la búsqueda constante de nuevos desafíos y aprendizajes. Prefiero mantenerme en las sombras mientras exploro y contribuyo al mundo digital.
+> **Estudiante de programación en constante aprendizaje en el vasto mundo de la tecnología.**
 
 ---
 
@@ -169,52 +167,6 @@ Soy un entusiasta de la tecnología, actualmente en mis inicios como estudiante 
 ![Top Languages](https://github-readme-stats.vercel.app/api/top-langs/?username=ANONIMO432HZ&layout=compact&theme=radical&hide_border=true&bg_color=0D1117&title_color=58A6FF&text_color=8B949E)
 
 ![GitHub Streak](https://github-readme-streak-stats.herokuapp.com/?user=ANONIMO432HZ&theme=radical&hide_border=true&background=0D1117&stroke=58A6FF&ring=58A6FF&fire=58A6FF&currStreakNum=8B949E&currStreakLabel=58A6FF&sideNums=8B949E&sideLabels=8B949E&dates=8B949E)
-
----
-
-## 🎯 **Objetivos y Metas**
-
-### 🚀 **Corto Plazo**
-- [ ] Mejorar habilidades en **Python** para ciberseguridad
-- [ ] Completar certificaciones básicas de **Linux**
-- [ ] Desarrollar más herramientas de **pentesting**
-- [ ] Contribuir a proyectos de **código abierto**
-- [ ] Crear **páginas web** modernas y responsivas
-- [ ] Aprender **frameworks web** (React, Vue.js)
-- [ ] Dominar **n8n** para automatización de workflows
-- [ ] Configurar y gestionar **VPS** para proyectos
-- [ ] Integrar **APIs** en aplicaciones web
-- [ ] Aprender **AWS, Azure, Google Cloud**
-- [ ] Gestionar **DigitalOcean Droplets**
-- [ ] Configurar **servidores VPN** con v2ray
-
-### 🌟 **Mediano Plazo**
-- [ ] Obtener certificaciones de **ciberseguridad**
-- [ ] Desarrollar herramientas más avanzadas
-- [ ] Participar en **CTFs** (Capture The Flag)
-- [ ] Crear contenido educativo sobre seguridad
-- [ ] Desarrollar **aplicaciones web** completas
-- [ ] Crear **portafolio web** profesional
-- [ ] Crear **workflows complejos** con n8n
-- [ ] Desplegar **aplicaciones en VPS** con Docker
-- [ ] Desarrollar **APIs propias** para proyectos
-- [ ] Desplegar **aplicaciones en cloud** (AWS/Azure/GCP)
-- [ ] Crear **infraestructura como código** (IaC)
-- [ ] Configurar **redes privadas** con VPN y v2ray
-
-### 🎯 **Largo Plazo**
-- [ ] Convertirme en **experto en ciberseguridad**
-- [ ] Crear una **suite completa de herramientas**
-- [ ] Contribuir significativamente a la **comunidad open source**
-- [ ] Desarrollar proyectos innovadores con **IA**
-- [ ] Crear **plataformas web** de seguridad
-- [ ] Desarrollar **herramientas web** para pentesting
-- [ ] Crear **ecosistema de automatización** con n8n
-- [ ] Gestionar **infraestructura cloud** completa
-- [ ] Desarrollar **plataformas SaaS** con APIs robustas
-- [ ] Convertirme en **Cloud Architect** experto
-- [ ] Crear **plataformas de VPN** propias
-- [ ] Desarrollar **soluciones multi-cloud** avanzadas
 
 ---
 
