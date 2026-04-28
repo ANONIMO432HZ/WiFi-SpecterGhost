@@ -5,7 +5,7 @@ param (
     [switch]$Silent = $false,
     [switch]$UseHiddenFolder = $false,
     [string]$OutputName = "wpsd.txt",
-    [string]$FolderName = "invisible"
+    [string]$FolderName = "logs"
 )
 
 # Forzar codificacion UTF-8 para evitar deformaciones en tildes y caracteres especiales
@@ -13,6 +13,11 @@ param (
 $OutputEncoding = [System.Text.Encoding]::UTF8
 
 $scriptDirectory = $PSScriptRoot
+# Si el motor esta en la carpeta core, subimos un nivel para guardar los logs en la raiz
+if ($scriptDirectory -match '\\core$') {
+    $scriptDirectory = Split-Path -Parent $scriptDirectory
+}
+
 # --- Configuracion de rutas y nombres ---
 $targetFolder = $scriptDirectory
 if ($UseHiddenFolder) {
@@ -73,10 +78,8 @@ if (-not $profileLines) {
     }
 }
 
-
 if (-not $Silent) { 
     Write-Host "Archivo generado: $finalOutputName" -ForegroundColor Cyan
     Write-Host "Ubicacion: $targetFolder" -ForegroundColor DarkCyan
+    Write-Host "Listo! El trabajo esta hecho." -ForegroundColor Cyan
 }
-
-if (-not $Silent) { Write-Host "Listo! El trabajo esta hecho." -ForegroundColor Cyan }
