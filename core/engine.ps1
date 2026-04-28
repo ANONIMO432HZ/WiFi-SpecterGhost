@@ -46,6 +46,21 @@ while (Test-Path (Join-Path -Path $targetFolder -ChildPath $finalOutputName)) {
 
 $outputFilePath = Join-Path -Path $targetFolder -ChildPath $finalOutputName
 
+# Escribir encabezado de metadata
+try {
+    $timestamp = Get-Date -Format "yyyy-MM-dd HH:mm:ss"
+    $computerName = $env:COMPUTERNAME
+    $userName = $env:USERNAME
+    
+    "=========================================" | Add-Content -Path $outputFilePath -Encoding UTF8
+    " AUDITORIA: WiFi-SpecterGhost            " | Add-Content -Path $outputFilePath -Encoding UTF8
+    " FECHA    : $timestamp                   " | Add-Content -Path $outputFilePath -Encoding UTF8
+    " EQUIPO   : $computerName                " | Add-Content -Path $outputFilePath -Encoding UTF8
+    " USUARIO  : $userName                    " | Add-Content -Path $outputFilePath -Encoding UTF8
+    "=========================================" | Add-Content -Path $outputFilePath -Encoding UTF8
+    "" | Add-Content -Path $outputFilePath -Encoding UTF8
+} catch { }
+
 if (-not $Silent) { Write-Host "Iniciando escaneo de redes guardadas..." -ForegroundColor Cyan }
 
 # Obtener perfiles

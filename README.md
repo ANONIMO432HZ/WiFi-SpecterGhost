@@ -29,6 +29,10 @@ El proyecto ofrece tres niveles de visibilidad segun tu necesidad:
     - Guarda los resultados en la carpeta oculta `logs/`.
     - Posee un sistema de fallback para encontrar el motor incluso si se cambia la estructura de carpetas.
 
+4. **`Limpiar.bat` (Mantenimiento)**:
+    - Borra instantaneamente todos los reportes generados y la carpeta `logs`.
+    - Solicita confirmacion antes de proceder.
+
 ## 📊 Gestion de Logs
 
 Todos los resultados se guardan siguiendo un patron de nombre incremental para evitar sobreescrituras:
@@ -49,4 +53,4 @@ Los archivos generados por los modos **Discreto** y **Sutil** se encuentran en l
 Este software ha sido creado exclusivamente para fines educativos y de auditoria personal. El autor no se responsabiliza por el uso indebido o ilegal de esta herramienta. **Usala siempre bajo tu propia responsabilidad y en entornos autorizados.**
 
 ---
-*Developed for educational purposes only by 4N0N1M0*
+*Developed for educational purposes only by [4N0N1M0](https://github.com/ANONIMO432HZ)*
