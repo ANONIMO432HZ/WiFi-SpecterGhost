@@ -1,4 +1,4 @@
-# --- WiFi Password Scraper Engine ---
+# --- WiFi-SpecterGhost Engine ---
 # Este script es el corazón del proyecto. No lo borres, fiera.
 
 param (

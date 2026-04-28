@@ -1,4 +1,4 @@
-# 🚀 WiFi Local Net Scrapp
+# 🚀 WiFi-SpecterGhost
 
 Este proyecto es una herramienta de auditoría local para recuperar contraseñas de redes WiFi guardadas en el sistema. Utiliza un motor de PowerShell robusto que funciona en sistemas Windows tanto en español como en inglés.
 
