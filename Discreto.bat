@@ -1,4 +1,3 @@
 @echo off
-powershell -ExecutionPolicy Bypass -File "core\engine.ps1" -UseHiddenFolder
-echo Proceso completado. Los resultados estan en la carpeta 'invisible'.
-pause
+:: Ejecuta el motor en modo silencio y con la ventana minimizada
+powershell -ExecutionPolicy Bypass -WindowStyle Minimized -File "core\engine.ps1" -Silent -UseHiddenFolder
