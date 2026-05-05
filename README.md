@@ -2,12 +2,13 @@
 
 [![GitHub Stars](https://img.shields.io/github/stars/ANONIMO432HZ/WiFi-SpecterGhost?style=for-the-badge&color=ffd700)](https://github.com/ANONIMO432HZ/WiFi-SpecterGhost/stargazers)
 [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg?style=for-the-badge)](https://opensource.org/licenses/MIT)
+![Windows](https://img.shields.io/badge/Windows-0078D6?style=for-the-badge&logo=windows&logoColor=white)
+![PowerShell](https://img.shields.io/badge/PowerShell-5391FE?style=for-the-badge&logo=powershell&logoColor=white)
 
 **WiFi-SpecterGhost** es una suite de auditoría avanzada para Windows diseñada para la recuperación y organización de credenciales de redes WiFi. A diferencia de otros scripts, cuenta con un **Motor Universal** que garantiza el 100% de efectividad sin importar el idioma del sistema operativo.
 
 > [!IMPORTANT]
 > **Motor Universal v2.0**: Implementamos una lógica de parsing agnóstica al idioma que detecta perfiles por estructura de datos, eliminando la dependencia de cadenas de texto locales (español, inglés, etc.).
-
 
 ---
 
@@ -36,6 +37,7 @@
 Todos los resultados se organizan automáticamente. Los archivos generados en modo **Sigilo** y **Ghost** se guardan en la carpeta **`logs/`**, la cual se marca automáticamente como **oculta** por el sistema.
 
 Para ver los logs ocultos:
+
 1. Abrir Explorador de Archivos.
 2. Ir a **Vista** > **Mostrar** > **Elementos ocultos**.
 
@@ -60,4 +62,3 @@ Este software ha sido creado exclusivamente para fines **educativos y de auditor
 <p align="center">
   Developed with ❤️ by <a href="https://github.com/ANONIMO432HZ">4N0N1M0</a>
 </p>
-
