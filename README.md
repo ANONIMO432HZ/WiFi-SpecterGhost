@@ -60,6 +60,6 @@ Para ver los logs ocultos:
 Este software ha sido creado exclusivamente para fines **educativos y de auditoría personal**. El autor no se responsabiliza por el uso indebido o ilegal de esta herramienta. **Usala siempre bajo tu propia responsabilidad y en entornos autorizados.**
 
 ---
-<p align="center">
-  Developed with ❤️ by <a href="https://github.com/ANONIMO432HZ">4N0N1M0</a>
-</p>
+
+Developed with ❤️ by [4N0N1M0](https://github.com/ANONIMO432HZ)
+

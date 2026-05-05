@@ -38,8 +38,10 @@
 All results are automatically organized. Files generated in **Stealth** and **Ghost** modes are saved in the **`logs/`** folder, which is automatically marked as **hidden** by the system.
 
 To view hidden logs:
+
 1. Open File Explorer.
 2. Go to **View** > **Show** > **Hidden items**.
+
 
 ---
 
@@ -59,6 +61,6 @@ To view hidden logs:
 This software has been created exclusively for **educational and personal auditing purposes**. The author is not responsible for the misuse or illegal use of this tool. **Always use it at your own risk and in authorized environments.**
 
 ---
-<p align="center">
-  Developed with ❤️ by <a href="https://github.com/ANONIMO432HZ">4N0N1M0</a>
-</p>
+
+Developed with ❤️ by [4N0N1M0](https://github.com/ANONIMO432HZ)
+
