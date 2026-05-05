@@ -92,13 +92,14 @@ if (-not $profileLines) {
                 foreach ($dLine in $profileDetailOutput) {
                     if ($dLine -match ':\s*(.+)$') {
                         $val = $matches[1].Trim()
+                        # Detectar si la red es abierta
+                        if ($dLine -match '(?:Autenticacion|Authentication)\s*:\s*(?:Abierta|Open)') {
+                            $password = "[Red Abierta / Sin Clave]"
+                        }
                         # Si el valor no es el nombre del perfil y estamos en una linea indentada
-                        # netsh suele mostrar el "Key Content" al final de la seccion de seguridad
-                        if ($dLine -match '(?:Contenido de la clave|Key Content|Clave de seguridad|Key Material|Security key|Criptografia|Authentication|Autenticacion)') {
-                            if ($dLine -match '(?:Contenido de la clave|Key Content|Key Material)\s*:\s*(.+)$') {
-                                $password = $matches[1].Trim()
-                                break
-                            }
+                        if ($dLine -match '(?:Contenido de la clave|Key Content|Key Material)\s*:\s*(.+)$') {
+                            $password = $matches[1].Trim()
+                            break
                         }
                     }
                 }

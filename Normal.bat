@@ -69,6 +69,9 @@ if (-not $profileLines) {
             try {
                 $profileDetailOutput = (netsh wlan show profile name="$profileName" key=clear 2>$null)
                 foreach ($dLine in $profileDetailOutput) {
+                    if ($dLine -match '(?:Autenticacion|Authentication)\s*:\s*(?:Abierta|Open)') {
+                        $password = "[Red Abierta / Sin Clave]"
+                    }
                     if ($dLine -match '(?:Contenido de la clave|Key Content|Key Material)\s*:\s*(.+)$') {
                         $password = $matches[1].Trim()
                         break
