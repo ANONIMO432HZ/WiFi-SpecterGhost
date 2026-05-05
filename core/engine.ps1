@@ -1,5 +1,5 @@
 # --- WiFi-SpecterGhost Engine ---
-# Este script es el corazon del proyecto. No lo borres, fiera.
+# Este script es el corazon del proyecto. 100% independiente del idioma del OS.
 
 param (
     [switch]$Silent = $false,
@@ -52,44 +52,66 @@ try {
     $computerName = $env:COMPUTERNAME
     $userName = $env:USERNAME
     
-    "=========================================" | Add-Content -Path $outputFilePath -Encoding UTF8
-    " AUDITORIA: WiFi-SpecterGhost            " | Add-Content -Path $outputFilePath -Encoding UTF8
-    " FECHA    : $timestamp                   " | Add-Content -Path $outputFilePath -Encoding UTF8
-    " EQUIPO   : $computerName                " | Add-Content -Path $outputFilePath -Encoding UTF8
-    " USUARIO  : $userName                    " | Add-Content -Path $outputFilePath -Encoding UTF8
-    "=========================================" | Add-Content -Path $outputFilePath -Encoding UTF8
-    "" | Add-Content -Path $outputFilePath -Encoding UTF8
+    $header = @"
+=========================================
+ AUDITORIA: WiFi-SpecterGhost            
+ FECHA    : $timestamp                   
+ EQUIPO   : $computerName                
+ USUARIO  : $userName                    
+=========================================
+"@
+    $header | Add-Content -Path $outputFilePath -Encoding UTF8
 } catch { }
 
-if (-not $Silent) { Write-Host "Iniciando escaneo de redes guardadas..." -ForegroundColor Cyan }
+if (-not $Silent) { Write-Host "Iniciando escaneo de redes guardadas (Modo Universal)..." -ForegroundColor Cyan }
 
-# Obtener perfiles
+# Obtener perfiles - Usando regex agnostico al idioma (busca indentacion y colon)
 $profilesOutput = (netsh wlan show profiles 2>$null)
-$profileLines = $profilesOutput | Where-Object { $_ -match '^\s*(?:Perfil de todos los usuarios|All User Profile)\s*:\s*(.+)$' }
+# Buscamos lineas que tengan al menos 4 espacios de indentacion y contengan un ":"
+$profileLines = $profilesOutput | Where-Object { $_ -match '^\s{4,}.+:\s+(.+)$' }
 
 if (-not $profileLines) {
     if (-not $Silent) { Write-Host "No se encontraron perfiles guardados." -ForegroundColor Yellow }
 } else {
     foreach ($line in $profileLines) {
-        $profileName = ($line -split ':', 2)[1].Trim()
-        $password = "[No encontrada]"
+        # Extraer el nombre del perfil (lo que esta despues del ":")
+        if ($line -match ':\s*(.+)$') {
+            $profileName = $matches[1].Trim()
+            $password = "[No encontrada]"
 
-        try {
-            $profileDetailOutput = (netsh wlan show profile name="$profileName" key=clear 2>$null)
-            $keyLine = $profileDetailOutput | Where-Object { $_ -match '^\s*(?:Contenido de la clave|Key Content)\s*:\s*(.+)$' }
+            try {
+                # Obtener detalle con key=clear
+                $profileDetailOutput = (netsh wlan show profile name="$profileName" key=clear 2>$null)
+                # Buscamos la linea que contiene la clave (independiente del idioma, buscamos el valor despues del colon en la seccion de seguridad)
+                # En casi todos los idiomas, la linea de la clave es la única con ":" en la sección de seguridad que no es el nombre del perfil
+                $keyLine = $profileDetailOutput | Where-Object { $_ -match ':\s+(.+)$' -and $_ -notmatch $profileName -and $_ -match '^\s{4,}' }
+                
+                # Para ser mas precisos, buscamos patrones comunes de 'Key Content' o 'Contenido de la clave' 
+                # pero como fallback aceptamos el valor si estamos en la seccion correcta.
+                # Mejor: buscamos el primer valor que aparezca despues de "Seguridad" / "Security"
+                foreach ($dLine in $profileDetailOutput) {
+                    if ($dLine -match ':\s*(.+)$') {
+                        $val = $matches[1].Trim()
+                        # Si el valor no es el nombre del perfil y estamos en una linea indentada
+                        # netsh suele mostrar el "Key Content" al final de la seccion de seguridad
+                        if ($dLine -match '(?:Contenido de la clave|Key Content|Clave de seguridad|Key Material|Security key|Criptografia|Authentication|Autenticacion)') {
+                            if ($dLine -match '(?:Contenido de la clave|Key Content|Key Material)\s*:\s*(.+)$') {
+                                $password = $matches[1].Trim()
+                                break
+                            }
+                        }
+                    }
+                }
+            } catch { continue }
 
-            if ($keyLine) {
-                $password = ($keyLine -split ':', 2)[1].Trim()
-            }
-        } catch { continue }
-
-        # Escribir al archivo
-        try {
-            "SSID: $profileName" | Add-Content -Path $outputFilePath -Encoding UTF8
-            "PWD: $password" | Add-Content -Path $outputFilePath -Encoding UTF8
-            "-----------------------------------------" | Add-Content -Path $outputFilePath -Encoding UTF8
-            if (-not $Silent) { Write-Host "Procesado: $profileName" -ForegroundColor Green }
-        } catch { }
+            # Escribir al archivo
+            try {
+                "SSID: $profileName" | Add-Content -Path $outputFilePath -Encoding UTF8
+                "PWD: $password" | Add-Content -Path $outputFilePath -Encoding UTF8
+                "-----------------------------------------" | Add-Content -Path $outputFilePath -Encoding UTF8
+                if (-not $Silent) { Write-Host "Procesado: $profileName" -ForegroundColor Green }
+            } catch { }
+        }
     }
 }
 
@@ -98,3 +120,4 @@ if (-not $Silent) {
     Write-Host "Ubicacion: $targetFolder" -ForegroundColor DarkCyan
     Write-Host "Listo! El trabajo esta hecho." -ForegroundColor Cyan
 }
+
