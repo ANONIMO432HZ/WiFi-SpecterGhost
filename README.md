@@ -1,13 +1,13 @@
 # 🚀 WiFi-SpecterGhost
 
 [![GitHub Stars](https://img.shields.io/github/stars/ANONIMO432HZ/WiFi-SpecterGhost?style=for-the-badge&color=ffd700)](https://github.com/ANONIMO432HZ/WiFi-SpecterGhost/stargazers)
-[![GitHub License](https://img.shields.io/github/license/ANONIMO432HZ/WiFi-SpecterGhost?style=for-the-badge&color=blue)](LICENSE)
-[![Quickdraw Badge](https://img.shields.io/badge/GitHub-Quickdraw-blue?style=for-the-badge&logo=github)](https://github.com/ANONIMO432HZ/WiFi-SpecterGhost)
+[![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg?style=for-the-badge)](https://opensource.org/licenses/MIT)
 
 **WiFi-SpecterGhost** es una suite de auditoría avanzada para Windows diseñada para la recuperación y organización de credenciales de redes WiFi. A diferencia de otros scripts, cuenta con un **Motor Universal** que garantiza el 100% de efectividad sin importar el idioma del sistema operativo.
 
 > [!IMPORTANT]
 > **Motor Universal v2.0**: Implementamos una lógica de parsing agnóstica al idioma que detecta perfiles por estructura de datos, eliminando la dependencia de cadenas de texto locales (español, inglés, etc.).
+
 
 ---
 
