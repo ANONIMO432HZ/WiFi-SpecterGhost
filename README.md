@@ -1,6 +1,7 @@
 # 🚀 WiFi-SpecterGhost
 
-[![GitHub Stars](https://img.shields.io/github/stars/ANONIMO432HZ/WiFi-SpecterGhost?style=for-the-badge&color=ffd700)](https://github.com/ANONIMO432HZ/WiFi-SpecterGhost/stargazers)
+[🇺🇸 English](README_EN.md) | [🇪🇸 Español](README.md)
+
 [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg?style=for-the-badge)](https://opensource.org/licenses/MIT)
 ![Windows](https://img.shields.io/badge/Windows-0078D6?style=for-the-badge&logo=windows&logoColor=white)
 ![PowerShell](https://img.shields.io/badge/PowerShell-5391FE?style=for-the-badge&logo=powershell&logoColor=white)
