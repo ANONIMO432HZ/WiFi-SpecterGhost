@@ -7,7 +7,7 @@ pause
 exit /b
 #>
 
-# --- WiFi-SpecterGhost Engine [Embedded] ---
+# --- WiFi-SpecterGhost Engine [Embedded - Universal] ---
 [Console]::OutputEncoding = [System.Text.Encoding]::UTF8
 $OutputEncoding = [System.Text.Encoding]::UTF8
 
@@ -41,46 +41,52 @@ try {
     $computerName = $env:COMPUTERNAME
     $userName = $env:USERNAME
     
-    "=========================================" | Add-Content -Path $outputFilePath -Encoding UTF8
-    " AUDITORIA: WiFi-SpecterGhost            " | Add-Content -Path $outputFilePath -Encoding UTF8
-    " FECHA    : $timestamp                   " | Add-Content -Path $outputFilePath -Encoding UTF8
-    " EQUIPO   : $computerName                " | Add-Content -Path $outputFilePath -Encoding UTF8
-    " USUARIO  : $userName                    " | Add-Content -Path $outputFilePath -Encoding UTF8
-    "=========================================" | Add-Content -Path $outputFilePath -Encoding UTF8
-    "" | Add-Content -Path $outputFilePath -Encoding UTF8
+    $header = @"
+=========================================
+ AUDITORIA: WiFi-SpecterGhost            
+ FECHA    : $timestamp                   
+ EQUIPO   : $computerName                
+ USUARIO  : $userName                    
+=========================================
+"@
+    $header | Add-Content -Path $outputFilePath -Encoding UTF8
 } catch { }
 
-Write-Host "Iniciando escaneo de redes guardadas..." -ForegroundColor Cyan
+Write-Host "Iniciando escaneo de redes guardadas (Modo Universal)..." -ForegroundColor Cyan
 
-# Obtener perfiles
+# Obtener perfiles - Regex agnostico (indentacion 4+ y colon)
 $profilesOutput = (netsh wlan show profiles 2>$null)
-$profileLines = $profilesOutput | Where-Object { $_ -match '^\s*(?:Perfil de todos los usuarios|All User Profile)\s*:\s*(.+)$' }
+$profileLines = $profilesOutput | Where-Object { $_ -match '^\s{4,}.+:\s+(.+)$' }
 
 if (-not $profileLines) {
     Write-Host "No se encontraron perfiles guardados." -ForegroundColor Yellow
 } else {
     foreach ($line in $profileLines) {
-        $profileName = ($line -split ':', 2)[1].Trim()
-        $password = "[No encontrada]"
+        if ($line -match ':\s*(.+)$') {
+            $profileName = $matches[1].Trim()
+            $password = "[No encontrada]"
 
-        try {
-            $profileDetailOutput = (netsh wlan show profile name="$profileName" key=clear 2>$null)
-            $keyLine = $profileDetailOutput | Where-Object { $_ -match '^\s*(?:Contenido de la clave|Key Content)\s*:\s*(.+)$' }
+            try {
+                $profileDetailOutput = (netsh wlan show profile name="$profileName" key=clear 2>$null)
+                foreach ($dLine in $profileDetailOutput) {
+                    if ($dLine -match '(?:Contenido de la clave|Key Content|Key Material)\s*:\s*(.+)$') {
+                        $password = $matches[1].Trim()
+                        break
+                    }
+                }
+            } catch { continue }
 
-            if ($keyLine) {
-                $password = ($keyLine -split ':', 2)[1].Trim()
-            }
-        } catch { continue }
-
-        try {
-            "SSID: $profileName" | Add-Content -Path $outputFilePath -Encoding UTF8
-            "PWD: $password" | Add-Content -Path $outputFilePath -Encoding UTF8
-            "-----------------------------------------" | Add-Content -Path $outputFilePath -Encoding UTF8
-            Write-Host "SSID: $profileName | PWD: $password" -ForegroundColor Green
-        } catch { }
+            try {
+                "SSID: $profileName" | Add-Content -Path $outputFilePath -Encoding UTF8
+                "PWD: $password" | Add-Content -Path $outputFilePath -Encoding UTF8
+                "-----------------------------------------" | Add-Content -Path $outputFilePath -Encoding UTF8
+                Write-Host "SSID: $profileName | PWD: $password" -ForegroundColor Green
+            } catch { }
+        }
     }
 }
 
 Write-Host "Archivo generado: $finalOutputName" -ForegroundColor Cyan
 Write-Host "Ubicacion: $targetFolder" -ForegroundColor DarkCyan
 Write-Host "Listo! El trabajo esta hecho." -ForegroundColor Cyan
+
