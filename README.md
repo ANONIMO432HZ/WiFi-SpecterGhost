@@ -62,4 +62,3 @@ Este software ha sido creado exclusivamente para fines **educativos y de auditor
 ---
 
 Developed with ❤️ by [4N0N1M0](https://github.com/ANONIMO432HZ)
-

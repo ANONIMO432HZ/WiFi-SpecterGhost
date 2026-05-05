@@ -42,7 +42,6 @@ To view hidden logs:
 1. Open File Explorer.
 2. Go to **View** > **Show** > **Hidden items**.
 
-
 ---
 
 ## 🛠️ Requirements and Usage
@@ -63,4 +62,3 @@ This software has been created exclusively for **educational and personal auditi
 ---
 
 Developed with ❤️ by [4N0N1M0](https://github.com/ANONIMO432HZ)
-
